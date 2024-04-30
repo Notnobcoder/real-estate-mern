@@ -2,8 +2,12 @@ import { z } from "zod";
 import { HomeLayout } from "../../layouts/HomeLayout";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useState } from "react";
 
 export const Register = () => {
+
+  const [message, setMessage] = useState("")
   type registerType = {
     firstName: string;
     lastName: string;
@@ -57,8 +61,15 @@ export const Register = () => {
     resolver: zodResolver(registeSchema),
   });
 
-  const handleRegisterSubmit = (data: registerType) => {
-    console.log(data);
+  const handleRegisterSubmit = async(data: registerType) => {
+    console.log(data, "dddd")
+    const url = "http://localhost:7000/api/users/register"
+    await axios.post(url, data).then((res) => {
+      console.log(res.data)
+      setMessage(res.data.message)
+    }).catch((err) => {
+      console.log(err)
+    })
   };
 
   return (
@@ -114,6 +125,9 @@ export const Register = () => {
           <button type="submit" className="bg-blue-500">
             Create account
           </button>
+          <p>
+          {message && message}
+          </p>
         </form>
       </HomeLayout>
     </>

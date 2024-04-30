@@ -1,51 +1,43 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { HomeLayoutHero } from "../../layouts/HomeLayoutHero";
-import { EndPoint } from "../../network";
-import { LoadingLayout } from "../../layouts/LoadingLayout";
-import { Link } from "react-router-dom";
+import { useQuery } from "react-query";
+import * as apiClient from "../../api-client"
+import { ProductsD } from "../../types/home";
+import { HomeLayout } from "../../layouts/HomeLayout";
+import { Navigation } from "../../components/Navigation/Navigation";
 
-export interface pageProps {}
+const HomePage = () => {
 
-export type ProductsD = {
-  products: Product[];
-  total: number;
-  skip: number;
-  limit: number;
-};
+  debugger
+  const { data: hotels } = useQuery<ProductsD>("fetchQuery", () =>
+    apiClient.fetchHotels()
+  );
 
-export type Product = {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-};
+  const topRowHotels = hotels?.products?.slice(0, 2) || [];
+  const bottomRowHotels = hotels?.products.slice(2) || [];
 
-export const Home = () => {
-  const { isPending, data, error } = useQuery<ProductsD>({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const response = await axios.get<ProductsD>(EndPoint);
-      return response.data;
-    },
-  });
-
-  if (error) return "An error has occurred: " + error.message;
   return (
-    <>
-      <HomeLayoutHero>
-        <Link to="/lalit">lalit</Link>
-        <LoadingLayout loading={isPending}>
-          {data?.products.map((_i) => <h4>{_i.title}</h4>)}
-        </LoadingLayout>
-      </HomeLayoutHero>
-    </>
+    <div className="space-y-3">
+      <HomeLayout>
+
+        <Navigation />
+        <h2 className="text-3xl font-bold">Latest Destinations</h2>
+        <p>Most recent desinations added by our hosts</p>
+
+        <div className="grid gap-4">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+            {topRowHotels.map((hotel) => (
+              <h4>{hotel?.title}</h4>
+            ))}
+          </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {bottomRowHotels.map((hotel) => (
+              <h4>{hotel?.title}</h4>
+            ))}
+          </div>
+        </div>
+      </HomeLayout>
+
+    </div>
   );
 };
+
+export default HomePage;

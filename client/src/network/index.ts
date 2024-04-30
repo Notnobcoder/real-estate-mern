@@ -1,1 +1,1 @@
-export const EndPoint = "https://dummyjson.com/products";
+export const EndPoint = "https://dummyjson.com";

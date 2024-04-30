@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ButtonC } from "../ButtonC";
 
 export const Header = () => {
   return (
@@ -12,7 +11,6 @@ export const Header = () => {
 
           <div className="flex items-center gap-4">
             <Link to="/sign-in">
-              <ButtonC content={"Sign In"} />
             </Link>
             <Link to="/add-hotel">add hotel</Link>
           </div>

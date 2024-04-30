@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { HomeLayout } from "../../layouts/HomeLayout";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export const Login = () => {
   type FormData = {
@@ -27,13 +28,16 @@ export const Login = () => {
     resolver: zodResolver(logiSchema),
   });
 
-  const handleLoginSubmit = (data: FormData) => {
-    console.log(data);
+  const handleLoginSubmit = async (data: FormData) => {
+    await axios.post(``)
+    // console.log(data , "data");
+
   };
 
   return (
     <>
       <HomeLayout>
+        <h4>Sign In</h4>
         <form onSubmit={handleSubmit(handleLoginSubmit)}>
           <div>
             <h4>Enter Email</h4>
