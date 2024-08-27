@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum MERCHANT_STATUS {
+  Waiting_Approval
+  Rejected
+  Approved
+}
+
+enum Role {
+  Admin
+  Member
+  Merchant
+}
+
+enum Status {
+  NotProcessed
+  Processing
+  Shipped
+  Delivered
+  Cancelled
+}
+
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  sku         String   @unique
+  name        String
+  description String
+  quantity    Int
+  price       Float    @default(0.0)
+  taxable     Boolean  @default(false)
+  isActive    Boolean  @default(false)
+  imageUrl    String?  @default("https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
+  imageKey    String?  @default("imagekey")
+  brand       String
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+}
