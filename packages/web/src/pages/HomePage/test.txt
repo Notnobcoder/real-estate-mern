@@ -1,9 +1,0 @@
-rest api
-product
-category
-store
-
-
-
-grapql 
-one url

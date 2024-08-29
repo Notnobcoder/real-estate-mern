@@ -2,6 +2,7 @@ import UserRepository from "../../repository/user.repository";
 import { Request, Response } from "express"
 import { zodSchema } from "../../schema/user.schema";
 import { hashPassword } from "../../service/bcrypt.service";
+import { ZodError } from "zod";
 
 class UserController {
   private readonly User: UserRepository
@@ -26,8 +27,6 @@ class UserController {
   async deleteUserById(req: Request, res: Response) {
     try {
       const { id } = req.params
-      console.log(id)
-
       const existingUser = this.User.findById(id)
 
       if (!existingUser) {
@@ -54,7 +53,7 @@ class UserController {
     try {
       const { username, email, password } = zodSchema.userSchema.parse(req.body)
 
-      const incriptedPassword = await hashPassword(password)
+      const incriptedPassword = hashPassword(password)
 
       const payload = {
         username: username,
@@ -71,7 +70,15 @@ class UserController {
 
       return res.json({ success: true, message: "user created" })
     } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation Error",
+          errors: error.errors, // Returning specific validation errors
+        });
+      }
       return res.json("error Occured" + error.message)
+
     }
   }
 }

@@ -11,6 +11,14 @@ class UserRepository {
     return this.userModel.find()
   }
 
+  async findByEmail(email: string) {
+    return this.userModel.findOne({ email });
+  }
+
+  async findByVerificationToken(verificationToken: string) {
+    return this.userModel.findOne({ verificationToken });
+  }
+
   async findById(userId: string) {
     return this.userModel.findById(userId);
   }

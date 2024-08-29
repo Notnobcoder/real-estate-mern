@@ -71,9 +71,6 @@ class ListingController {
         offer: offer
       }
 
-      console.log(payload)
-
-
       const data = await this.Listing.createUser(payload)
 
       if (!data) {
