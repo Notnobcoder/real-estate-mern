@@ -13,10 +13,9 @@ class UserController {
 
   async getUsers(_req: Request, res: Response) {
     try {
-      // const data = [{ name: "tushar" }, { name: "working" }]
       const user = await this.User.getUsers()
 
-      return res.json({ status: true, user })
+      return res.status(200).json({ status: true, user })
 
     } catch (error) {
       return res.json("error Occured" + error.message)

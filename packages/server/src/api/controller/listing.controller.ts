@@ -14,7 +14,7 @@ class ListingController {
       // const data = [{ name: "tushar" }, { name: "working" }]
       const user = await this.Listing.getUsers()
 
-      return res.json({ status: true, user })
+      return res.status(200).json({ status: true, user })
 
     } catch (error) {
       return res.json("error Occured" + error.message)
